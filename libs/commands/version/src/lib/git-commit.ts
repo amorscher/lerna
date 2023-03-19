@@ -1,4 +1,5 @@
 import { tempWrite } from "@lerna/core";
+import { ExecOptions } from "child_process";
 import log from "npmlog";
 import { EOL } from "os";
 
@@ -7,12 +8,22 @@ const childProcess = require("@lerna/child-process");
 
 module.exports.gitCommit = gitCommit;
 
+export interface GitOpts{
+  amend:boolean;
+  commitHooks:boolean;
+  granularPathspec:boolean;
+  signGitCommit:boolean;
+  signoffGitCommit:boolean;
+  signGitTag:boolean;
+  forceGitTag:boolean;
+}
+
 /**
  * @param {string} message
  * @param {{ amend: boolean; commitHooks: boolean; signGitCommit: boolean; }} gitOpts
  * @param {import("@lerna/child-process").ExecOpts} opts
  */
-function gitCommit(message, { amend, commitHooks, signGitCommit, signoffGitCommit }, opts) {
+function gitCommit(message: string, { amend, commitHooks, signGitCommit, signoffGitCommit }:GitOpts, opts:unknown) {
   log.silly("gitCommit", message);
   const args = ["commit"];
 

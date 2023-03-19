@@ -5,7 +5,7 @@ import { collectUncommitted } from "./collect-uncommitted";
 import { describeRef } from "./describe-ref";
 import { ValidationError } from "./validation-error";
 
-export function checkWorkingTree({ cwd } = {}) {
+export function checkWorkingTree({ cwd } = {cwd:string} |undefined) {
   let chain = Promise.resolve();
 
   chain = chain.then(() => describeRef({ cwd }));
@@ -34,7 +34,7 @@ export function throwIfReleased({ refCount }) {
 const EUNCOMMIT_MSG =
   "Working tree has uncommitted changes, please commit or remove the following changes before continuing:\n";
 
-export function mkThrowIfUncommitted(options = {}) {
+export function mkThrowIfUncommitted(options = {dirty:boolean}| undefined) {
   return function throwIfUncommitted({ isDirty }) {
     if (isDirty) {
       return collectUncommitted(options).then((uncommitted) => {

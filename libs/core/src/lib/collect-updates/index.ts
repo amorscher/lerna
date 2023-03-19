@@ -31,8 +31,8 @@ interface UpdateCollectorOptions {
  * Create a list of graph nodes representing packages changed since the previous release, tagged or otherwise.
  */
 export function collectUpdates(
-  filteredPackages: Package[],
-  packageGraph: PackageGraph,
+  filteredPackages: Package[] = [],
+  packageGraph: PackageGraph | undefined,
   execOpts: /* Should be type import("@lerna/child-process").ExecOpts */ any,
   commandOptions: UpdateCollectorOptions
 ) {
@@ -43,9 +43,9 @@ export function collectUpdates(
   const forced = getPackagesForOption(useConventionalGraduate ? conventionalGraduate : forcePublish);
 
   const packages =
-    filteredPackages.length === packageGraph.size
+    filteredPackages.length === packageGraph?.size
       ? packageGraph
-      : new Map(filteredPackages.map(({ name }) => [name, packageGraph.get(name)]));
+      : new Map(filteredPackages.map(({ name }) => [name, packageGraph?.get(name)]));
 
   let committish = commandOptions.since;
 

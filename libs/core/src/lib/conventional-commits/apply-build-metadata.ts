@@ -5,12 +5,14 @@ const BUILD_METADATA_REGEX = /^[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*$/;
 /**
  * Append build metadata to version.
  */
-export function applyBuildMetadata(version: string, buildMetadata: string) {
-  if (!buildMetadata) {
-    return version;
-  }
-  if (isValidBuildMetadata(buildMetadata)) {
-    return `${version}+${buildMetadata}`;
+export function applyBuildMetadata(version: string | null, buildMetadata: string) {
+  if (version) {
+    if (!buildMetadata) {
+      return version;
+    }
+    if (isValidBuildMetadata(buildMetadata)) {
+      return `${version}+${buildMetadata}`;
+    }
   }
   throw new ValidationError("EBUILDMETADATA", "Build metadata does not satisfy SemVer specification.");
 }

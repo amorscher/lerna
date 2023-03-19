@@ -21,7 +21,7 @@ export class Command<T extends CommandConfigOptions = CommandConfigOptions> {
   runner: Promise<unknown>;
   concurrency?: number;
   toposort = false;
-  execOpts?: { cwd: string; maxBuffer?: number };
+  execOpts?: { cwd: string; maxBuffer?: number; isDirty:boolean };
   packageGraph?: PackageGraph;
   logger!: log.Logger;
 
@@ -141,7 +141,7 @@ export class Command<T extends CommandConfigOptions = CommandConfigOptions> {
 
   // Override this to inherit config from another command.
   // For example `changed` inherits config from `publish`.
-  get otherCommandConfigs() {
+  get otherCommandConfigs():string[] {
     return [];
   }
 
@@ -211,6 +211,7 @@ export class Command<T extends CommandConfigOptions = CommandConfigOptions> {
     this.execOpts = {
       cwd: this.project.rootPath,
       maxBuffer,
+      isDirty:false
     };
   }
 

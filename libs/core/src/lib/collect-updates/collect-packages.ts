@@ -3,7 +3,7 @@ import { collectDependents } from "./collect-dependents";
 
 export interface PackageCollectorOptions {
   // By default, all nodes passed in are candidates
-  isCandidate?: (node?: PackageGraphNode, name?: string) => boolean;
+  isCandidate?: (node: PackageGraphNode, name: string) => boolean;
   onInclude?: (name: string) => void;
   excludeDependents?: boolean;
 }
@@ -12,12 +12,12 @@ export interface PackageCollectorOptions {
  * Build a list of graph nodes, possibly including dependents, using predicate if available.
  */
 export function collectPackages(
-  packages: Map<string, PackageGraphNode>,
+  packages: Map<string, PackageGraphNode> |undefined,
   { isCandidate = () => true, onInclude, excludeDependents }: PackageCollectorOptions = {}
 ) {
   const candidates = new Set<PackageGraphNode>();
 
-  packages.forEach((node, name) => {
+  packages?.forEach((node, name) => {
     if (isCandidate(node, name)) {
       candidates.add(node);
     }
@@ -30,7 +30,7 @@ export function collectPackages(
   // The result should always be in the same order as the input
   const updates: PackageGraphNode[] = [];
 
-  packages.forEach((node, name) => {
+  packages?.forEach((node, name) => {
     if (candidates.has(node)) {
       if (onInclude) {
         onInclude(name);

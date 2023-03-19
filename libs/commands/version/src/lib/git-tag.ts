@@ -1,4 +1,5 @@
 import log from "npmlog";
+import {GitOpts} from "./git-commit"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const childProcess = require("@lerna/child-process");
@@ -10,7 +11,7 @@ module.exports.gitTag = gitTag;
  * @param {{ forceGitTag: boolean; signGitTag: boolean; }} gitOpts
  * @param {import("@lerna/child-process").ExecOpts} opts
  */
-function gitTag(tag, { forceGitTag, signGitTag }, opts, command = "git tag %s -m %s") {
+export function gitTag(tag :string, { forceGitTag, signGitTag }:GitOpts, opts:{ cwd: string; maxBuffer?: number; isDirty:boolean }|undefined, command = "git tag %s -m %s") {
   log.silly("gitTag", tag, command);
 
   const [cmd, ...args] = command.split(" ");
@@ -25,9 +26,6 @@ function gitTag(tag, { forceGitTag, signGitTag }, opts, command = "git tag %s -m
     interpolatedArgs.push("--sign");
   }
 
-  // TODO: refactor to address type issues
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  log.verbose(cmd, interpolatedArgs);
+  log.verbose(cmd, interpolatedArgs.toString());
   return childProcess.exec(cmd, interpolatedArgs, opts);
 }

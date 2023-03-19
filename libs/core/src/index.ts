@@ -33,6 +33,8 @@ export { default as tempWrite } from "./lib/temp-write";
 export { timer } from "./lib/timer";
 export { ValidationError } from "./lib/validation-error";
 export { CommandConfigOptions } from "./lib/project";
+export {PackageGraphNode} from "./lib/package-graph/package-graph-node";
+export {ChangelogPresetConfig} from "./lib/conventional-commits/constants";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const npmConf = require("./lib/npm-conf");
